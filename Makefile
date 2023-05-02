@@ -19,3 +19,7 @@ $(BIN_DIR)/program: $(OBJ)
 clean:
 	rm -f $(OBJ_DIR)/*.o $(BIN_DIR)/program
 	rm -f $(OBJ) $(EXECUTABLE)
+dbmp:
+	rm -f *.bmp
+exe:
+	./$(BIN_DIR)/program

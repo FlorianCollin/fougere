@@ -59,6 +59,7 @@ int set_all_pix(PIC pic, COLOR color)
     return 0;
 }
 
+// Ancienne version nulle, je la laisse la pour me rappeler que je suis nulle ;)
 int draw_line(PIC pic, int x1, int y1, int x2, int y2, COLOR color){
     if (x1 > pic.width) return -1;
     if (x2 > pic.width) return -1;
@@ -70,9 +71,6 @@ int draw_line(PIC pic, int x1, int y1, int x2, int y2, COLOR color){
     tmp2 = abs(y1-y2);
     if(tmp1>tmp2) n = tmp1;
     else n = tmp2;
-
-
-
     if (x1 == x2){
         if (y1<y2)
         {
@@ -88,7 +86,6 @@ int draw_line(PIC pic, int x1, int y1, int x2, int y2, COLOR color){
                 *(pic.pixels + x1 +((y1-k)*pic.width)) = color;
             }   
         }
-        
     }
     else if(y1 == y2){
         if(x1 < x2){
@@ -115,26 +112,16 @@ int draw_line(PIC pic, int x1, int y1, int x2, int y2, COLOR color){
             sx = sign(x2-x1);
             sy = sign(y2-y1);
             for (int k = 0; k<n+1; k++)
-            {
-               
+            {      
                 *(pic.pixels + x1 + k*sx  +(y1+k*sy)*pic.width) = color;
-
-            }       
-
+            }  
         }
         else{
-           
-           
             double itt = 2*n;           
             double vx =((double)y2 - (double)y1)/((double)x2 -(double)x1);
             double vy =((double)x2 - (double)x1)/((double)y2 - (double)y1);
-
-
             double delta_x = (x2 - x1);
             double delta_y = (y2 - y1);
-            //ainsi v = (vx, vy) on a le segment qui peut être représenter par tout les carrés
-            // dans lesquels le segement passe
-
             double pas = delta_x/itt;
 
             double tmp_x = x1;
@@ -145,8 +132,6 @@ int draw_line(PIC pic, int x1, int y1, int x2, int y2, COLOR color){
 
                 tmp_x += pas;
                 tmp_y += pas*vx;
-                //printf("%d\n", k);
-                //printf("(%d,%d)\n", (int)tmp_x, (int)tmp_y);
                 *(pic.pixels +  (int)tmp_x  + (int)tmp_y*pic.width) = color;
 
             }     
@@ -154,5 +139,25 @@ int draw_line(PIC pic, int x1, int y1, int x2, int y2, COLOR color){
 
         }
     }
+    return 0;
+}
+
+// version qui à la classe et qui utilise l'alorithme de Bresenham
+int draw_line2(PIC pic, int x1, int y1, int x2, int y2, COLOR color){
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = x1 < x2 ? 1 : -1;
+    int sy = y1 < y2 ? 1 : -1;
+    int err = dx - dy;
+    int e2;
+ 
+    while (1) {
+        set_pix(pic, x1, y1, color);
+        if (x1 == x2 && y1 == y2) break;
+        e2 = 2 * err;
+        if (e2 > -dy) { err -= dy; x1 += sx; }
+        if (e2 < dx) { err += dx; y1 += sy; }
+    }
+ 
     return 0;
 }

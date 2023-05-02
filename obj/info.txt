@@ -1,0 +1,1 @@
+Ici sont compiler les fichiers objects ".o", il sont effacable avec la commande "make clean" ce qui effacera également l'executable dans le fichier bin.

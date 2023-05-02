@@ -3,7 +3,7 @@
 #include <math.h>
 #include "bmpTools.h"
 
-// define :
+// define : ( je definie bcp de define pour me simplifier la vie hihi ;) )
 
 // Longueur :
 
@@ -22,7 +22,8 @@
 #define HOD -0.263
 #define HOE -1.175
 
-
+#define W 1600 //width
+#define H 900 //height
 
 
 int main() {
@@ -33,11 +34,12 @@ int main() {
     COLOR magenta = {255, 0, 255};
     COLOR cyan = {0,255,255};
     COLOR white = {255,255,255};
-
+    
     printf("hello world");
 
-    PIC pic_test  = new_pic(1600, 900);
+    PIC pic_test  = new_pic(W, H);
     set_all_pix(pic_test, red);
+    draw_line2(pic_test,2,2,62,80,cyan);
     save_pic(pic_test, "premier_pic.bmp");
 
 
