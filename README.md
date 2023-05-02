@@ -6,23 +6,41 @@ L'objectif de ce projet est de réaliser la fougère de Barnsley (fractal) et ai
 
 .
 ├── Makefile
+
 ├── README.md
+
 ├── bin
+
 │   └── program
+
 ├── include
+
 │   ├── bmpTools.h
+
 │   └── mathTools.h
+
 ├── obj
+
 │   ├── bmpTools.o
+
 │   ├── ioTools.o
+
 │   ├── main.o
+
 │   └── mathTools.o
-├── premier_pic.bmp
+
 ├── src
+
 │   ├── bmpTools.c
+
 │   ├── ioTools.c
+
 │   ├── main.c
-│   └── mathTools.c
+
+│   └── mathTools.
+
+├── premier_pic.bmp
+
 └── test
 
 Vous trouverez tous les fichiers source (.c) dans le dossier "src" et les en-têtes (.h) dans le dossier "include".
