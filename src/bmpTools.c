@@ -36,16 +36,21 @@ int save_pic(PIC pic, const char* file_name){
                     fwrite(&tmp_pal.green, 1, 1, fp);
             }
         }
-
-
     fclose(fp);
     return 0;
 }
 
 int set_pix(PIC pic, int x, int y, COLOR color){
+
     *(pic.pixels+ x + y*pic.width) = color;
 
     return 0;
+}
+
+void set_pixV2(PIC pic, COLOR color, P_D p) {
+    if ((int)(p.x) >  pic.width || (int)(p.x) < 0 || (int)(p.y) > pic.height || (int)(p.y) < 0)
+        printf("ERROR SP1");
+    else *(pic.pixels+ (int)(p.x) + (int)(p.y)*pic.width) = color;
 }
 
 int set_all_pix(PIC pic, COLOR color)
@@ -69,11 +74,11 @@ int draw_line(PIC pic, COLOR color, P_D p1, P_D p2) {
     int e2;
  
     while (1) {
-        if ((int)(p1.x) >  WIDTH || (int)(p1.x) < 0 || (int)(p1.y) > HEIGHT ||(int)(p1.y) < 0) {
+        if ((int)(p1.x) >  pic.width || (int)(p1.x) < 0 || (int)(p1.y) > pic.height ||(int)(p1.y) < 0) {
             printf("ERROR DL1\n");
             break;
         }
-        else set_pix(pic, (int)(p1.x), (int)(p1.y), color);
+        else set_pixV2(pic, color, p1);
         if ((int)(p1.x) == (int)(p2.x) && (int)(p1.y) == (int)(p2.y)) break;
         e2 = 2 * err;
         if (e2 > -dy) { err -= dy; (p1.x) += sx; }

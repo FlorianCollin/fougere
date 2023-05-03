@@ -26,6 +26,7 @@ struct picture{
 PIC new_pic(int width, int height);
 int save_pic(PIC pic, const char* file_name);
 int set_pix(PIC pic, int x, int y, COLOR color);
+void set_pixV2(PIC pic, COLOR color, P_D p);
 int set_all_pix(PIC pic, COLOR color);
 int draw_line(PIC pic, COLOR color, P_D p1, P_D p2);
 #endif
