@@ -21,4 +21,6 @@ int max(int a, int b);
 int min(int a, int b);
 int sign(int a);
 
+void affiche_point_d(P_D m);
+void affiche_point_i(P_I m);
 #endif
