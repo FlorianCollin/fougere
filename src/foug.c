@@ -40,3 +40,5 @@ P_D init_point(double longueur, double angle, P_D O) {
     return  m;
 }
 
+
+

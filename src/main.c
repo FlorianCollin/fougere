@@ -16,11 +16,7 @@ pixel en haut à gauche). Le facteur d’échelle sera fixé à 1500.
 
 */
 
-COLOR red = {255, 0, 0};
-COLOR blue = {0, 255, 0};
-COLOR green = {0, 0, 255};
-COLOR black = {0, 0, 0};
-COLOR marque = {255, 0, 255};
+
 
 
 int main() {
@@ -125,6 +121,9 @@ int main() {
 
 
 
+
+
+
     //sauvegarde du pic
     save_pic(pic, "premier_pic.bmp");
     free(tab);
@@ -134,25 +133,33 @@ int main() {
 
 int algo_final(PIC pic, P_D *tab) {
     
+    COLOR red = {255, 0, 0};
+    COLOR blue = {0, 255, 0};
+    COLOR green = {0, 0, 255};
+    COLOR black = {0, 0, 0};
 
 
     static int compt_g = 0; // la variable n'est affectée que la première fois
     static int compt_b = 0;
     static int compt_r = 0;
     int compt = compt_b + compt_g + compt_r;
-    P_D O_save = tab[0];
-    P_D H_save = tab[1];
+
+    printf("\n\nO : ");
+    affiche_point_d(tab[0]);
+    printf("H : ");
+    affiche_point_d(tab[1]);
 
     // calcul des valeurs necessaires pour la suite :
     P_D OH_vector = calcul_vector(tab[0], tab[1]);
     double norme_OH = calcul_norme(OH_vector);
 
-    printf("NORME OH : %f\n", norme_OH);
+    printf("norme OH : %f\n", norme_OH);
 
     double angle = 0;
     printf("OH :  ");
     affiche_point_d(OH_vector);
     angle = - atan(OH_vector.y / OH_vector.x) ;
+    printf("angle : %f rad / %f deg\n", angle, angle*180.0/3.141592);
 
     // Figure Verte :
 
@@ -161,8 +168,10 @@ int algo_final(PIC pic, P_D *tab) {
 
     Og.x = tab[0].x + OOg * OH_vector.x;
     Og.y = tab[0].y + OOg * OH_vector.y;
+    printf("Og : ");
     affiche_point_d(Og);
-    Hg = init_point(OgHg*OH, HOgHg + angle, Og);
+    Hg = init_point(OgHg*norme_OH, HOgHg + angle, Og);
+    printf("Hg : ");
     affiche_point_d(Hg);
     // if (draw_line(pic, green, Og, Hg)) {
     //     return -1;
@@ -183,27 +192,36 @@ int algo_final(PIC pic, P_D *tab) {
 
     Or.x = tab[0].x + OOr * OH_vector.x;
     Or.y = tab[0].y + OOr * OH_vector.y;
+    printf("Or : ");
     affiche_point_d(Or);
-    Hr = init_point(OrHr*OH, HOrHr + angle, Or);
+    Hr = init_point(OrHr*norme_OH, HOrHr + angle, Or);
+    printf("Hr : ");
     affiche_point_d(Hr);
 
 
     // Figure Bleu
 
     P_D Ob, Hb;
-
+    //draw_line(pic, red, tab[0], tab[1]);
     Ob.x = tab[0].x + OOb * OH_vector.x;
     Ob.y = tab[0].y + OOb * OH_vector.y;
+    printf("norme OOb : %f\n", calcul_norme(calcul_vector(tab[0], Ob)));
+    printf("Ob : ");
     affiche_point_d(Ob);
-    Hb = init_point(ObHb*OH, HObHb + angle, Ob);
+    Hb = init_point(ObHb*norme_OH, HObHb + angle, Ob);
+    printf("Hb : ");
     affiche_point_d(Hb);
+    // draw_line(pic, marque, tab[0], Ob);
+    // draw_line(pic, blue, Ob, Hb);
 
 
+    // tab[0] = Ob;
+    // tab[1] = Hb;
 
     tab[0] = Ob;
     tab[1] = Hb;
     compt_b ++;
-    if (compt >= 5){
+    if (norme_OH <= 10){
         printf("compt blue : %d\n", compt_b);
         return 0;
 
@@ -213,7 +231,7 @@ int algo_final(PIC pic, P_D *tab) {
     tab[0] = Og;
     tab[1] = Hg;
     compt_g ++;
-    if (compt >= 5) {
+    if (norme_OH <= 10) {
         printf("compt green : %d\n", compt_g);
         return 0;
     }
@@ -222,7 +240,7 @@ int algo_final(PIC pic, P_D *tab) {
     tab[0] = Or;
     tab[1] = Hr;
     compt_r ++;
-    if (compt >= 5){
+    if (norme_OH <= 10){
         printf("compt red : %d\n", compt_r);
         return 0;
     }
