@@ -5,6 +5,7 @@ int trace_figure_initial(PIC pic, COLOR color, P_D p1, P_D p2, P_D p3, P_D p4, P
     draw_line(pic, color, p2, p3);
     draw_line(pic, color, p3, p4);
     draw_line(pic, color, p4, p5);
+    draw_line(pic, color, p5, p6);
     draw_line(pic, color, p6, p1);
    return 0;
 }
@@ -38,3 +39,4 @@ P_D init_point(double longueur, double angle, P_D O) {
     m.y = O.y - ( longueur * sin(angle) ); // le signe "-" est du au sens du repère
     return  m;
 }
+

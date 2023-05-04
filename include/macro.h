@@ -4,7 +4,7 @@
 
 // Longueurs :
 
-#define SCALE 1500.0
+#define SCALE 1000.0
 
 #define OH SCALE
 #define OA 0.335*OH
@@ -23,5 +23,25 @@
 
 #define WIDTH 1600 
 #define HEIGHT 900 //height
+
+
+// define des valeurs necessaires pour la recursivité
+
+// À partir d'une figure on dessine trois figure une rouge "r", une bleu "b" et une verte "g"
+
+// Positions
+#define OOg 0.16
+#define OOr 0.12
+#define OOb 0.08
+// Angles (radians)
+#define HOgHg -0.05
+#define HOrHr 3.141592/2.0
+#define HObHb -3.141592/2.0
+// Tailles
+#define OgHg 0.86
+#define OrHr 0.27
+#define ObHb 0.30
+
+// ATTENTION !!! La figure bleu est inversée
 
 #endif

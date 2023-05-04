@@ -23,4 +23,8 @@ int sign(int a);
 
 void affiche_point_d(P_D m);
 void affiche_point_i(P_I m);
+
+
+P_D calcul_vector(P_D O, P_D H);
+double calcul_norme(P_D vector);
 #endif
