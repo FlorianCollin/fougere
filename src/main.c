@@ -7,21 +7,14 @@
 #include "foug.h"
 
 int algo_final(PIC pic, P_D *tab);
-/*
-Consigne memo :
-
-le premier segment de la tige de base part
-horizontalement, vers la droite, depuis les coordonnées x = 10, y = 424 (le point de référence est le
-pixel en haut à gauche). Le facteur d’échelle sera fixé à 1500.
-
-*/
-
-
-
 
 int main() {
-    // premier test et initilsation des variables utiles.
-    // On definit le premier point avec les conditions initial.
+    // COLOR 
+    COLOR black = {0, 0, 0};
+    COLOR gris = {255,200, 200};
+    COLOR marque = {255, 0, 255};
+    COLOR cyan = {0,255,255};
+    COLOR white = {255,255,255};
     P_D O;
     O.x = 10.0;
     O.y = 424;
@@ -35,34 +28,20 @@ int main() {
     P_D C = init_point(OC, HOC, O);
     P_D D = init_point(OD, HOD, O);
     P_D E = init_point(OE, HOE, O);
-
     affiche_point_d(O);
     affiche_point_d(A);
     affiche_point_d(B);
     affiche_point_d(C);
     affiche_point_d(D);
     affiche_point_d(E);
-    
-
     printf("init finish\n");
-    
-
-    // COLOR 
-    COLOR black = {0, 0, 0};
-    COLOR gris = {255,200, 200};
-
-    COLOR marque = {255, 0, 255};
-    COLOR cyan = {0,255,255};
-    COLOR white = {255,255,255};
-    
-
 
     PIC pic  = new_pic(WIDTH, HEIGHT);
     set_all_pix(pic, white);
 
     // manipulation du pic
-    draw_line(pic, gris, O, H);
-    trace_figure_initial(pic, gris, O, A, B, C, D, E); // on trace la première figure
+    // draw_line(pic, gris, O, H);
+    // trace_figure_initial(pic, gris, O, A, B, C, D, E); // on trace la première figure
 
     // set_pixV2(pic, red, O);
     // set_pixV2(pic, red, H);
@@ -99,154 +78,18 @@ int main() {
 
     // draw_line(pic, black, O, Og);
 
-    // maintenant commencons à definir la logique de notre algorithme
-
-    /*
-    Pour ce qui est du dessin sur le pic on aurra tjr juste à dessiner [OOg]
-    Il va falloir bien choisir comment gérer nos variables temporelles et le choix des fonctions
-    
-    formule pour pouvoir faire le nouveau point Og Or Ob
-
-    // il y a plusieur méthode géometrique 
-
-    */
-    
+    // génération de l'image
     P_D *tab;
     tab = malloc(2*sizeof(P_D));
     tab[0] = O;
     tab[1] = H;
  
-
     algo_final(pic, tab);
 
-
-
-
-
-
     //sauvegarde du pic
-    save_pic(pic, "premier_pic.bmp");
+    save_pic(pic, "pic.bmp");
     free(tab);
 
     return 0;
-}
-
-int algo_final(PIC pic, P_D *tab) {
-    
-    COLOR red = {255, 0, 0};
-    COLOR blue = {0, 255, 0};
-    COLOR green = {0, 0, 255};
-    COLOR black = {0, 0, 0};
-
-
-    static int compt_g = 0; // la variable n'est affectée que la première fois
-    static int compt_b = 0;
-    static int compt_r = 0;
-    int compt = compt_b + compt_g + compt_r;
-
-    printf("\n\nO : ");
-    affiche_point_d(tab[0]);
-    printf("H : ");
-    affiche_point_d(tab[1]);
-
-    // calcul des valeurs necessaires pour la suite :
-    P_D OH_vector = calcul_vector(tab[0], tab[1]);
-    double norme_OH = calcul_norme(OH_vector);
-
-    printf("norme OH : %f\n", norme_OH);
-
-    double angle = 0;
-    printf("OH :  ");
-    affiche_point_d(OH_vector);
-    angle = - atan(OH_vector.y / OH_vector.x) ;
-    printf("angle : %f rad / %f deg\n", angle, angle*180.0/3.141592);
-
-    // Figure Verte :
-
-    // calcul de Og et Hg sachant O et H
-    P_D Og, Hg;
-
-    Og.x = tab[0].x + OOg * OH_vector.x;
-    Og.y = tab[0].y + OOg * OH_vector.y;
-    printf("Og : ");
-    affiche_point_d(Og);
-    Hg = init_point(OgHg*norme_OH, HOgHg + angle, Og);
-    printf("Hg : ");
-    affiche_point_d(Hg);
-    // if (draw_line(pic, green, Og, Hg)) {
-    //     return -1;
-    // }
-    if (draw_line(pic, black,  tab[0], Og)) {
-        return -2;
-    }
-    // if (set_pixV2(pic, marque, tab[1])) {
-    //     return -3;
-    // }
-    // if (set_pixV2(pic, marque, Og)) {
-    //     return -4;
-    // }
-
-    // Figure Rouge
-
-    P_D Or, Hr;
-
-    Or.x = tab[0].x + OOr * OH_vector.x;
-    Or.y = tab[0].y + OOr * OH_vector.y;
-    printf("Or : ");
-    affiche_point_d(Or);
-    Hr = init_point(OrHr*norme_OH, HOrHr + angle, Or);
-    printf("Hr : ");
-    affiche_point_d(Hr);
-
-
-    // Figure Bleu
-
-    P_D Ob, Hb;
-    //draw_line(pic, red, tab[0], tab[1]);
-    Ob.x = tab[0].x + OOb * OH_vector.x;
-    Ob.y = tab[0].y + OOb * OH_vector.y;
-    printf("norme OOb : %f\n", calcul_norme(calcul_vector(tab[0], Ob)));
-    printf("Ob : ");
-    affiche_point_d(Ob);
-    Hb = init_point(ObHb*norme_OH, HObHb + angle, Ob);
-    printf("Hb : ");
-    affiche_point_d(Hb);
-    // draw_line(pic, marque, tab[0], Ob);
-    // draw_line(pic, blue, Ob, Hb);
-
-
-    // tab[0] = Ob;
-    // tab[1] = Hb;
-
-    tab[0] = Ob;
-    tab[1] = Hb;
-    compt_b ++;
-    if (norme_OH <= 10){
-        printf("compt blue : %d\n", compt_b);
-        return 0;
-
-    }
-    else algo_final(pic, tab);
-
-    tab[0] = Og;
-    tab[1] = Hg;
-    compt_g ++;
-    if (norme_OH <= 10) {
-        printf("compt green : %d\n", compt_g);
-        return 0;
-    }
-    else algo_final(pic, tab);
-
-    tab[0] = Or;
-    tab[1] = Hr;
-    compt_r ++;
-    if (norme_OH <= 10){
-        printf("compt red : %d\n", compt_r);
-        return 0;
-    }
-    else algo_final(pic, tab);
-    
-    
-    //note le critère d'arret de notre recursivité sera la taille de OH    
 }
 
