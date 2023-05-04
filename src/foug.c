@@ -69,7 +69,8 @@ int algo_final(PIC pic, P_D *tab) {
     double angle = 0;
     printf("OH :  ");
     affiche_point_d(OH_vector);
-    angle = - atan(OH_vector.y / OH_vector.x) ;
+    angle = atan2(OH_vector.y, OH_vector.x);
+
     printf("angle : %f rad / %f deg\n", angle, angle*180.0/3.141592);
 
     // Figure Verte :
@@ -81,7 +82,7 @@ int algo_final(PIC pic, P_D *tab) {
     Og.y = tab[0].y + OOg * OH_vector.y;
     printf("Og : ");
     affiche_point_d(Og);
-    Hg = init_point(OgHg*norme_OH, HOgHg + angle, Og);
+    Hg = init_point(OgHg*norme_OH, HOgHg - angle, Og);
     printf("Hg : ");
     affiche_point_d(Hg);
     // if (draw_line(pic, green, Og, Hg)) {
@@ -105,7 +106,7 @@ int algo_final(PIC pic, P_D *tab) {
     Or.y = tab[0].y + OOr * OH_vector.y;
     printf("Or : ");
     affiche_point_d(Or);
-    Hr = init_point(OrHr*norme_OH, HOrHr + angle, Or);
+    Hr = init_point(OrHr*norme_OH, HOrHr - angle, Or);
     printf("Hr : ");
     affiche_point_d(Hr);
 
@@ -119,7 +120,7 @@ int algo_final(PIC pic, P_D *tab) {
     printf("norme OOb : %f\n", calcul_norme(calcul_vector(tab[0], Ob)));
     printf("Ob : ");
     affiche_point_d(Ob);
-    Hb = init_point(ObHb*norme_OH, HObHb + angle , Ob);
+    Hb = init_point(ObHb*norme_OH, HObHb - angle , Ob);
     printf("Hb : ");
     affiche_point_d(Hb);
     // draw_line(pic, marque, tab[0], Ob);
@@ -132,7 +133,7 @@ int algo_final(PIC pic, P_D *tab) {
     tab[0] = Ob;
     tab[1] = Hb;
     compt_b ++;
-    if (norme_OH < 40){
+    if (norme_OH < 20){
         printf("compt blue : %d\n", compt_b);
         return 0;
 
@@ -142,7 +143,7 @@ int algo_final(PIC pic, P_D *tab) {
     tab[0] = Og;
     tab[1] = Hg;
     compt_g ++;
-    if (norme_OH < 40) {
+    if (norme_OH < 20) {
         printf("compt green : %d\n", compt_g);
         return 0;
     }
@@ -151,7 +152,7 @@ int algo_final(PIC pic, P_D *tab) {
     tab[0] = Or;
     tab[1] = Hr;
     compt_r ++;
-    if (norme_OH < 40){
+    if (norme_OH < 20){
         printf("compt red : %d\n", compt_r);
         return 0;
     }
