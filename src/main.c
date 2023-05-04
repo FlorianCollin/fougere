@@ -20,6 +20,7 @@ COLOR red = {255, 0, 0};
 COLOR blue = {0, 255, 0};
 COLOR green = {0, 0, 255};
 COLOR black = {0, 0, 0};
+COLOR marque = {255, 0, 255};
 
 
 int main() {
@@ -54,7 +55,7 @@ int main() {
     COLOR black = {0, 0, 0};
     COLOR gris = {255,200, 200};
 
-    COLOR magenta = {255, 0, 255};
+    COLOR marque = {255, 0, 255};
     COLOR cyan = {0,255,255};
     COLOR white = {255,255,255};
     
@@ -118,6 +119,8 @@ int main() {
     tab = malloc(2*sizeof(P_D));
     tab[0] = O;
     tab[1] = H;
+ 
+
     algo_final(pic, tab);
 
 
@@ -131,11 +134,21 @@ int main() {
 
 int algo_final(PIC pic, P_D *tab) {
     
-    static int compt = 0; // la variable n'est affectée que la première fois
-        
+
+
+    static int compt_g = 0; // la variable n'est affectée que la première fois
+    static int compt_b = 0;
+    static int compt_r = 0;
+    int compt = compt_b + compt_g + compt_r;
+    P_D O_save = tab[0];
+    P_D H_save = tab[1];
+
     // calcul des valeurs necessaires pour la suite :
     P_D OH_vector = calcul_vector(tab[0], tab[1]);
     double norme_OH = calcul_norme(OH_vector);
+
+    printf("NORME OH : %f\n", norme_OH);
+
     double angle = 0;
     printf("OH :  ");
     affiche_point_d(OH_vector);
@@ -151,30 +164,71 @@ int algo_final(PIC pic, P_D *tab) {
     affiche_point_d(Og);
     Hg = init_point(OgHg*OH, HOgHg + angle, Og);
     affiche_point_d(Hg);
-    if (draw_line(pic, green, Og, Hg)) {
-        return -1;
-    }
+    // if (draw_line(pic, green, Og, Hg)) {
+    //     return -1;
+    // }
     if (draw_line(pic, black,  tab[0], Og)) {
         return -2;
     }
-    if (set_pixV2(pic, red, tab[0])) {
-        return -3;
-    }
-    if (set_pixV2(pic, red, Og)) {
-        return -4;
-    }
+    // if (set_pixV2(pic, marque, tab[1])) {
+    //     return -3;
+    // }
+    // if (set_pixV2(pic, marque, Og)) {
+    //     return -4;
+    // }
 
     // Figure Rouge
 
-    
+    P_D Or, Hr;
+
+    Or.x = tab[0].x + OOr * OH_vector.x;
+    Or.y = tab[0].y + OOr * OH_vector.y;
+    affiche_point_d(Or);
+    Hr = init_point(OrHr*OH, HOrHr + angle, Or);
+    affiche_point_d(Hr);
 
 
+    // Figure Bleu
+
+    P_D Ob, Hb;
+
+    Ob.x = tab[0].x + OOb * OH_vector.x;
+    Ob.y = tab[0].y + OOb * OH_vector.y;
+    affiche_point_d(Ob);
+    Hb = init_point(ObHb*OH, HObHb + angle, Ob);
+    affiche_point_d(Hb);
+
+
+
+    tab[0] = Ob;
+    tab[1] = Hb;
+    compt_b ++;
+    if (compt >= 5){
+        printf("compt blue : %d\n", compt_b);
+        return 0;
+
+    }
+    else algo_final(pic, tab);
 
     tab[0] = Og;
     tab[1] = Hg;
-    compt ++;
-    if (compt >= 5) return 0;
+    compt_g ++;
+    if (compt >= 5) {
+        printf("compt green : %d\n", compt_g);
+        return 0;
+    }
     else algo_final(pic, tab);
+
+    tab[0] = Or;
+    tab[1] = Hr;
+    compt_r ++;
+    if (compt >= 5){
+        printf("compt red : %d\n", compt_r);
+        return 0;
+    }
+    else algo_final(pic, tab);
+    
+    
     //note le critère d'arret de notre recursivité sera la taille de OH    
 }
 

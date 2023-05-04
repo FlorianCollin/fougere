@@ -4,7 +4,7 @@
 
 // Longueurs :
 
-#define SCALE 1000.0
+#define SCALE 1200.0
 
 #define OH SCALE
 #define OA 0.335*OH
