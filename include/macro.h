@@ -4,7 +4,9 @@
 
 // Longueurs :
 
-#define SCALE 1500.0
+#define UP_SCALE_FACTOR 1
+
+#define SCALE 1500.0 * UP_SCALE_FACTOR
 
 #define OH SCALE
 #define OA 0.335*OH
@@ -21,8 +23,8 @@
 #define HOD -0.263
 #define HOE -1.175
 
-#define WIDTH 1600 
-#define HEIGHT 900 //height
+#define WIDTH 1600 * UP_SCALE_FACTOR
+#define HEIGHT 900 * UP_SCALE_FACTOR
 
 
 // define des valeurs necessaires pour la recursivité
