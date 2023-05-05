@@ -1,27 +1,47 @@
+/*
+COLLIN FLORIAN E1 ENSEIRB
+
+POJET C
+
+Ce programme ce trouve dans le cadre d'un projet scolaire en 1er année d'Électronique à l'ENSEIRB MATMECA.
+L'objectif finale de ce projet et de réaliser une fractale / image de fougère au format .bmp
+
+
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+// Les fonctions et les macros sont inclus grace au fichier ci dessous.
 #include "bmpTools.h"
 #include "mathTools.h"
 #include "macro.h"
 #include "foug.h"
 
-int algo_final(PIC pic, P_D *tab);
 
 int main() {
     // COLOR 
-    COLOR black = {0, 0, 0};
-    COLOR gris = {255,200, 200};
-    COLOR marque = {255, 0, 255};
-    COLOR cyan = {0,255,255};
-    COLOR white = {255,255,255};
+    const COLOR black = {0, 0, 0};
+    const COLOR gris = {255,200, 200};
+    const COLOR marque = {255, 0, 255};
+    const COLOR cyan = {0,255,255};
+    const COLOR white = {255,255,255};
+
     P_D O;
     O.x = 10.0;
     O.y = 424;
+
+    // La première phase du projet conciste à réaliser la figure géométrique et les 3 sous figure
+
     // Petit test pour voir si tout est OK!
-    printf("hello world\n");
+    printf("hello world\n"); // toujours dire bonjour !
     info();
+
     // On definit les coordonnées exacts de tout les premiers points
+
+    // J'ai defini la fonction init_point (voir "mathTools.c"),
+    //qui me permet de determiner les coordonnées d'un point connaisant une origine, une distance et un angle.
+
     P_D H = init_point(OH, 0.0, O);
     P_D A = init_point(OA, HOA, O);
     P_D B = init_point(OB, HOB, O);
@@ -39,7 +59,9 @@ int main() {
     PIC pic  = new_pic(WIDTH, HEIGHT);
     set_all_pix(pic, white);
 
-    // manipulation du pic
+    ////////////  ETAPE 1 : TEST  ////////////
+
+    // // manipulation du pic
     // draw_line(pic, gris, O, H);
     // trace_figure_initial(pic, gris, O, A, B, C, D, E); // on trace la première figure
 
@@ -78,7 +100,10 @@ int main() {
 
     // draw_line(pic, black, O, Og);
 
-    // génération de l'image
+    // J'arrive bien à dessiner la figure et les sous figures ainsi je peux rentrer dans le vif du sujet
+
+    ////////////  ETAPE 2 : GENERATION DE L'IMAGE DE LA FOUGÈRE ///////////////
+
     P_D *tab;
     tab = malloc(2*sizeof(P_D));
     tab[0] = O;

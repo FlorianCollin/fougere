@@ -44,6 +44,5 @@
 #define OrHr 0.27
 #define ObHb 0.30
 
-// ATTENTION !!! La figure bleu est inversée
 
 #endif

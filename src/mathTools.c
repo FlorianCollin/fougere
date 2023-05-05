@@ -1,9 +1,5 @@
 #include "mathTools.h"
 
-
-
-
-
 int min(int a, int b){
     if(a>=b) return a;
     if(a<b) return b;
@@ -22,9 +18,10 @@ int sign(int a){
 void affiche_point_d(P_D m) {
     printf("(%f, %f)\n", m.x, m.y);
 }
-void affiche_point_i(P_I m) {
-    printf("(%d, %d)\n", m.x, m.y);
-}
+
+// void affiche_point_i(P_I m) {
+//     printf("(%d, %d)\n", m.x, m.y);
+// }
 
 P_D calcul_vector(P_D O, P_D H) {
     P_D OH_vector;
