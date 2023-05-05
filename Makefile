@@ -1,6 +1,6 @@
 CXX = gcc
-CXXFLAGS = -Wall -I./include
-LDFLAGS = -lm
+CXXFLAGS = -Wall -I./include 
+LDFLAGS = -lm -lSDL2 -lSDL2_image
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 BIN_DIR = ./bin

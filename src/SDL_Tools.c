@@ -44,3 +44,10 @@ int drawImage(SDL_Texture *image_texture, SDL_Renderer *renderer, SDL_Texture *t
     return 0;
 }
 
+int texturePaste(SDL_Renderer *renderer, SDL_Texture *texture_cible, SDL_Texture *texture_tmp) {
+    SDL_SetRenderTarget(renderer, texture_cible);
+    SDL_RenderCopy(renderer, texture_tmp, NULL, NULL);
+    SDL_SetRenderTarget(renderer, NULL);
+    return 0;
+}
+

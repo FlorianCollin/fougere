@@ -13,6 +13,18 @@ L'objectif finale de ce projet et de réaliser une fractale / image de fougère 
 #include <stdlib.h>
 #include <math.h>
 
+#define SDL_VISU //option pour avoir une visualisation graphique et intéractive de la fractale
+
+
+#ifdef SDL_VISU
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include "SDL_Tools.h"
+// faire les definitions des variables ici
+#endif
+
+
+
 // Les fonctions et les macros sont inclus grace au fichier ci dessous.
 #include "bmpTools.h"
 #include "mathTools.h"
@@ -22,7 +34,24 @@ L'objectif finale de ce projet et de réaliser une fractale / image de fougère 
 
 
 
+
 int main() {
+
+    #ifdef SDL_VISU
+
+    // Initialisation de SDL2
+
+    SDL_Window *window = NULL;
+    SDL_Renderer *renderer = NULL;
+    SDL_Texture *texture = NULL;
+
+    if (fullInit(&window, &renderer, WIDTH, HEIGHT)) {
+        printf("Erreur lors de l'initialisation de SDL\n");      
+        SDL_Quit();
+        return 1;
+    }
+    
+    #endif
 
     // COLOR 
     const COLOR black = {0, 0, 0};
@@ -113,6 +142,7 @@ int main() {
     // J'arrive bien à dessiner la figure et les sous figures ainsi je peux rentrer dans le vif du sujet
 
     ////////////  ETAPE 2 : GENERATION DE L'IMAGE DE LA FOUGÈRE ///////////////
+
     Vect* head = create_vect(O.x, O.y, H.x, H.y);
 
     P_D *tab;
@@ -130,6 +160,39 @@ int main() {
     free(tab);
     delete_list(&head);
 
+    //Les images ont été créer !!
+
+    ////////////////////////////////// ETAPE 3 : SDL //////////////////////////////////
+
+    #ifdef SDL_VISU
+
+    // chargement de(s) image(s) :
+
+    texture = loadImage("pic.bmp", renderer);
+    
+    // boucle d'affichage de SDL
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+
+    // Affichage de la fenêtre
+    SDL_RenderPresent(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
+    // Attente de la fermeture de la fenêtre
+    SDL_Event event;
+    while (SDL_WaitEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            break;
+        }
+    }
+
+
+    // Nettoyage de SDL
+    SDL_DestroyTexture(texture);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+
+    #endif
 
     return 0;
 }
