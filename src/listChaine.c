@@ -65,7 +65,6 @@ void draw_vector(Vect *head, PIC pic, COLOR color)
     Vect *current = head;
     double x1,y1,x2,y2;
     while (current != NULL) {
-        //print_vect(current);
         P1.x = current->x1;
         P1.y = current->y1;
         P2.x = current->x2;

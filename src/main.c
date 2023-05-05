@@ -113,7 +113,7 @@ int main() {
     // J'arrive bien à dessiner la figure et les sous figures ainsi je peux rentrer dans le vif du sujet
 
     ////////////  ETAPE 2 : GENERATION DE L'IMAGE DE LA FOUGÈRE ///////////////
-    Vect* head = NULL;
+    Vect* head = create_vect(O.x, O.y, H.x, H.y);
 
     P_D *tab;
     tab = malloc(2*sizeof(P_D));
@@ -122,11 +122,13 @@ int main() {
  
     algo_final(pic, tab, 1, &head);
     //sauvegarde du pic
+   
+    
+    //draw_vector(head, pic, black);
+
     save_pic(pic, "pic.bmp");
     free(tab);
-    
-    // draw_vector(head, pic, cyan);
-    // delete_list(&head);
+    delete_list(&head);
 
 
     return 0;

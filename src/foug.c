@@ -43,7 +43,7 @@ P_D init_point(double longueur, double angle, P_D O) {
 
 
 int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
-    Vect *current = *head;
+    Vect * current = *head;
     
     // const COLOR red = {255, 0, 0};
     // const COLOR blue = {0, 255, 0};
@@ -119,12 +119,11 @@ int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
     //affiche_point_d(Hb);
 
     // RECURSIVITÉ (le critère de sortie et la norme de OH)
-    int norme_min = 4;
+    int norme_min = 1;
 
 
 
     
-
     tab[0] = Ob; tab[1] = Hb;
     //add_vect(head, tab[0].x, tab[0].y, tab[1].x, tab[1].y);
     if (norme_OH < norme_min){
@@ -132,9 +131,9 @@ int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
 
     }
     else {
-        add_vect(head, Og.x, Og.y, tab[0].x, tab[0].y);
-        current = current->next;
-
+        // add_vect(&current, Og.x, Og.y, tab[0].x, tab[0].y);
+        // current = current->next;
+        
         tab[0] = Ob; tab[1] = Hb;
         algo_final(pic, tab, -opt1, &current);
         tab[0] = Og; tab[1] = Hg;
