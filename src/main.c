@@ -18,6 +18,8 @@ L'objectif finale de ce projet et de réaliser une fractale / image de fougère 
 #include "mathTools.h"
 #include "macro.h"
 #include "foug.h"
+#include "listChaine.h"
+
 
 
 int main() {
@@ -50,6 +52,7 @@ int main() {
     P_D C = init_point(OC, HOC, O);
     P_D D = init_point(OD, HOD, O);
     P_D E = init_point(OE, HOE, O);
+    
     affiche_point_d(O);
     affiche_point_d(A);
     affiche_point_d(B);
@@ -110,17 +113,21 @@ int main() {
     // J'arrive bien à dessiner la figure et les sous figures ainsi je peux rentrer dans le vif du sujet
 
     ////////////  ETAPE 2 : GENERATION DE L'IMAGE DE LA FOUGÈRE ///////////////
+    Vect* head = NULL;
 
     P_D *tab;
     tab = malloc(2*sizeof(P_D));
     tab[0] = O;
     tab[1] = H;
  
-    algo_final(pic, tab);
-
+    algo_final(pic, tab, 1, &head);
     //sauvegarde du pic
     save_pic(pic, "pic.bmp");
     free(tab);
+    
+    // draw_vector(head, pic, cyan);
+    // delete_list(&head);
+
 
     return 0;
 }

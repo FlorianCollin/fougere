@@ -42,14 +42,15 @@ P_D init_point(double longueur, double angle, P_D O) {
 
 
 
-int algo_final(PIC pic, P_D *tab) {
-
+int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
+    Vect *current = *head;
     
     // const COLOR red = {255, 0, 0};
     // const COLOR blue = {0, 255, 0};
     // const COLOR green = {0, 0, 255};
 
     const COLOR black = {0, 0, 0};
+    
 
     //printf("\n\nO : ");
     //affiche_point_d(tab[0]);
@@ -77,9 +78,12 @@ int algo_final(PIC pic, P_D *tab) {
     Og.y = tab[0].y + OOg * OH_vector.y;
     //printf("Og : ");
     //affiche_point_d(Og);
-    Hg = init_point(OgHg*norme_OH, HOgHg - angle, Og);
+    Hg = init_point(OgHg*norme_OH, opt1*HOgHg -angle, Og);
     //printf("Hg : ");
     //affiche_point_d(Hg);
+
+
+    // ON DESINE SUR LE PIC ICI 
 
     if (draw_line(pic, black,  tab[0], Og)) {
         return -2;
@@ -93,9 +97,10 @@ int algo_final(PIC pic, P_D *tab) {
     Or.y = tab[0].y + OOr * OH_vector.y;
     //printf("Or : ");
     //affiche_point_d(Or);
-    Hr = init_point(OrHr*norme_OH, HOrHr - angle, Or);
+    Hr = init_point(OrHr*norme_OH, opt1*HOrHr -angle, Or);
     //printf("Hr : ");
     //affiche_point_d(Hr);
+    
 
 
     // FIGURE BLEU
@@ -103,35 +108,40 @@ int algo_final(PIC pic, P_D *tab) {
     // IL ME RESTE À INVERSER LA BLEU !!!
 
     P_D Ob, Hb;
-    Ob.x = tab[0].x + OOb * OH_vector.x;
-    Ob.y = tab[0].y + OOb * OH_vector.y;
+    Ob.x = (tab[0].x + OOb * OH_vector.x);
+    Ob.y = (tab[0].y + OOb * OH_vector.y);
+
     //printf("norme OOb : %f\n", calcul_norme(calcul_vector(tab[0], Ob)));
     //printf("Ob : ");
     //affiche_point_d(Ob);
-    Hb = init_point(ObHb*norme_OH, HObHb - angle , Ob);
+    Hb = init_point(ObHb*norme_OH, opt1*HObHb -angle, Ob);
     //printf("Hb : ");
     //affiche_point_d(Hb);
 
     // RECURSIVITÉ (le critère de sortie et la norme de OH)
-    int norme_min = 1;
+    int norme_min = 4;
+
+
+
+    
 
     tab[0] = Ob; tab[1] = Hb;
+    //add_vect(head, tab[0].x, tab[0].y, tab[1].x, tab[1].y);
     if (norme_OH < norme_min){
         return 0;
 
     }
-    else algo_final(pic, tab);
+    else {
+        add_vect(head, Og.x, Og.y, tab[0].x, tab[0].y);
+        current = current->next;
 
-    tab[0] = Og; tab[1] = Hg;
-    if (norme_OH < norme_min) {
-        return 0;
-    }
-    else algo_final(pic, tab);
+        tab[0] = Ob; tab[1] = Hb;
+        algo_final(pic, tab, -opt1, &current);
+        tab[0] = Og; tab[1] = Hg;
+        algo_final(pic, tab, opt1, &current);
+        tab[0] = Or; tab[1] = Hr;
+        algo_final(pic, tab, opt1, &current);
 
-    tab[0] = Or; tab[1] = Hr;
-    if (norme_OH < norme_min){
-        return 0;
+
     }
-    else algo_final(pic, tab);
-    
 }

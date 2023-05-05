@@ -14,6 +14,9 @@ ces fonctions utilise les fonctions de "bmpTools.h" pour fonctionner.
 #include <math.h>
 
 #include "bmpTools.h"
+#include "macro.h"
+#include "listChaine.h"
+
 
 /*  
 trace_figure_initial :
@@ -40,6 +43,6 @@ P_D init_point(double longueur, double angle, P_D O);
 algo_final :
 Algorithme recursif pour créer la fougère
 */
-int algo_final(PIC pic, P_D *tab);
+int algo_final(PIC pic, P_D *tab, int opt1, Vect** head);
 
 #endif

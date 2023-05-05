@@ -5,7 +5,7 @@
 // Longueurs :
 
 #define UP_SCALE_FACTOR 1
-
+#define PI 3.141592
 #define SCALE 1500.0 * UP_SCALE_FACTOR
 
 #define OH SCALE
