@@ -45,28 +45,29 @@ P_D init_point(double longueur, double angle, P_D O) {
 int algo_final(PIC pic, P_D *tab) {
 
     
-    const COLOR red = {255, 0, 0};
-    const COLOR blue = {0, 255, 0};
-    const COLOR green = {0, 0, 255};
+    // const COLOR red = {255, 0, 0};
+    // const COLOR blue = {0, 255, 0};
+    // const COLOR green = {0, 0, 255};
+
     const COLOR black = {0, 0, 0};
 
-    printf("\n\nO : ");
-    affiche_point_d(tab[0]);
-    printf("H : ");
-    affiche_point_d(tab[1]);
+    //printf("\n\nO : ");
+    //affiche_point_d(tab[0]);
+    //printf("H : ");
+    //affiche_point_d(tab[1]);
 
     // calcul des valeurs necessaires pour la suite :
     P_D OH_vector = calcul_vector(tab[0], tab[1]);
     double norme_OH = calcul_norme(OH_vector);
 
-    printf("norme OH : %f\n", norme_OH);
+    //printf("norme OH : %f\n", norme_OH);
 
     double angle = 0;
-    printf("OH :  ");
-    affiche_point_d(OH_vector);
+    //printf("OH :  ");
+    //affiche_point_d(OH_vector);
     angle = atan2(OH_vector.y, OH_vector.x);
 
-    printf("angle : %f rad / %f deg\n", angle, angle*180.0/3.141592);
+    //printf("angle : %f rad / %f deg\n", angle, angle*180.0/3.141592);
 
     // FIGURE VERTE :
 
@@ -74,11 +75,11 @@ int algo_final(PIC pic, P_D *tab) {
 
     Og.x = tab[0].x + OOg * OH_vector.x;
     Og.y = tab[0].y + OOg * OH_vector.y;
-    printf("Og : ");
-    affiche_point_d(Og);
+    //printf("Og : ");
+    //affiche_point_d(Og);
     Hg = init_point(OgHg*norme_OH, HOgHg - angle, Og);
-    printf("Hg : ");
-    affiche_point_d(Hg);
+    //printf("Hg : ");
+    //affiche_point_d(Hg);
 
     if (draw_line(pic, black,  tab[0], Og)) {
         return -2;
@@ -90,42 +91,45 @@ int algo_final(PIC pic, P_D *tab) {
 
     Or.x = tab[0].x + OOr * OH_vector.x;
     Or.y = tab[0].y + OOr * OH_vector.y;
-    printf("Or : ");
-    affiche_point_d(Or);
+    //printf("Or : ");
+    //affiche_point_d(Or);
     Hr = init_point(OrHr*norme_OH, HOrHr - angle, Or);
-    printf("Hr : ");
-    affiche_point_d(Hr);
+    //printf("Hr : ");
+    //affiche_point_d(Hr);
 
 
     // FIGURE BLEU
 
+    // IL ME RESTE À INVERSER LA BLEU !!!
+
     P_D Ob, Hb;
     Ob.x = tab[0].x + OOb * OH_vector.x;
     Ob.y = tab[0].y + OOb * OH_vector.y;
-    printf("norme OOb : %f\n", calcul_norme(calcul_vector(tab[0], Ob)));
-    printf("Ob : ");
-    affiche_point_d(Ob);
+    //printf("norme OOb : %f\n", calcul_norme(calcul_vector(tab[0], Ob)));
+    //printf("Ob : ");
+    //affiche_point_d(Ob);
     Hb = init_point(ObHb*norme_OH, HObHb - angle , Ob);
-    printf("Hb : ");
-    affiche_point_d(Hb);
+    //printf("Hb : ");
+    //affiche_point_d(Hb);
 
     // RECURSIVITÉ (le critère de sortie et la norme de OH)
+    int norme_min = 1;
 
     tab[0] = Ob; tab[1] = Hb;
-    if (norme_OH < 20){
+    if (norme_OH < norme_min){
         return 0;
 
     }
     else algo_final(pic, tab);
 
     tab[0] = Og; tab[1] = Hg;
-    if (norme_OH < 20) {
+    if (norme_OH < norme_min) {
         return 0;
     }
     else algo_final(pic, tab);
 
     tab[0] = Or; tab[1] = Hr;
-    if (norme_OH < 20){
+    if (norme_OH < norme_min){
         return 0;
     }
     else algo_final(pic, tab);

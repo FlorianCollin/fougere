@@ -12,6 +12,7 @@ L'objectif finale de ce projet et de réaliser une fractale / image de fougère 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
 // Les fonctions et les macros sont inclus grace au fichier ci dessous.
 #include "bmpTools.h"
 #include "mathTools.h"
@@ -20,6 +21,7 @@ L'objectif finale de ce projet et de réaliser une fractale / image de fougère 
 
 
 int main() {
+
     // COLOR 
     const COLOR black = {0, 0, 0};
     const COLOR gris = {255,200, 200};
@@ -59,8 +61,13 @@ int main() {
     PIC pic  = new_pic(WIDTH, HEIGHT);
     set_all_pix(pic, white);
 
-    ////////////  ETAPE 1 : TEST  ////////////
+    // test de draw_line
+    // P_D P1 = {0,0};
+    // P_D P2 = {50,20};
+    // draw_line(pic, black, A, B);
 
+    ////////////  ETAPE 1 : TEST  ////////////
+    
     // // manipulation du pic
     // draw_line(pic, gris, O, H);
     // trace_figure_initial(pic, gris, O, A, B, C, D, E); // on trace la première figure
