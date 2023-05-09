@@ -1,5 +1,6 @@
 #ifndef SDLTOOLS_H
 #define SDLTOOLS_H
+ 
 //SDL lib
 
 #include<SDL2/SDL.h>

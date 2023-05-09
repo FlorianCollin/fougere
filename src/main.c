@@ -61,8 +61,8 @@ int main() {
     const COLOR white = {255,255,255};
 
     P_D O;
-    O.x = 10.0;
-    O.y = 424;
+    O.x = 10.0 * UP_SCALE_FACTOR;
+    O.y = 424 * UP_SCALE_FACTOR;
 
     // La première phase du projet conciste à réaliser la figure géométrique et les 3 sous figure
 
@@ -160,29 +160,68 @@ int main() {
     free(tab);
     delete_list(&head);
 
-    //Les images ont été créer !!
+    //Le(s) image(s) ont été créer !!
 
     ////////////////////////////////// ETAPE 3 : SDL //////////////////////////////////
 
     #ifdef SDL_VISU
-
+    int factor = 10;
+    float angle = 0;
+    int speed = 10;
+    SDL_Rect rect = {WIDTH/2, HEIGHT/2, WIDTH/factor, HEIGHT/factor};
+    SDL_Point origine_rotation = {0.0};
     // chargement de(s) image(s) :
 
     texture = loadImage("pic.bmp", renderer);
     
     // boucle d'affichage de SDL
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
     // Affichage de la fenêtre
     SDL_RenderPresent(renderer);
-    SDL_RenderCopy(renderer, texture, NULL, NULL);
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
     SDL_RenderPresent(renderer);
     // Attente de la fermeture de la fenêtre
     SDL_Event event;
-    while (SDL_WaitEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            break;
+    float currentTime = SDL_GetTicks();
+    float previousTime;
+    float deltaTime;
+    int quit = 0;
+    while (!quit) {
+        previousTime = currentTime;
+        currentTime = SDL_GetTicks();
+        deltaTime = currentTime - previousTime;
+        while (SDL_PollEvent(&event)) {
+
+            if (event.type == SDL_QUIT) {
+                quit = 1;
+            }
+            else if (event.type == SDL_KEYDOWN) {
+                switch (event.key.keysym.sym) {
+                    case SDLK_s:
+                        speed +=5;
+                        break;
+                    case SDLK_d:
+                        speed -=5;
+                        break;
+                }
+            }
+
         }
+        SDL_RenderClear(renderer);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle, &origine_rotation, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle+90, &origine_rotation, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle+180, &origine_rotation, SDL_FLIP_NONE);
+        SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle+270, &origine_rotation, SDL_FLIP_NONE);
+
+        SDL_RenderPresent(renderer);
+        if (deltaTime < 50){ // 50ms entre chaque frame
+            SDL_Delay(50-deltaTime);
+            angle += speed;
+            // rect.x += 100;
+            // if (rect.x > WIDTH -100) rect.x = 100;
+        }
+
     }
 
 
