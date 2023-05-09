@@ -1,7 +1,6 @@
 #include "SDL_Tools.h"
 
 
-
 int fullInit(SDL_Window **window, SDL_Renderer **renderer, int SCREEN_WIDTH, int SCREEN_HEIGHT) {
     if(0 != SDL_Init(SDL_INIT_VIDEO)) {
         fprintf(stderr, "Erreur SDL_Init : %s", SDL_GetError());

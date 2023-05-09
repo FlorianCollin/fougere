@@ -1,3 +1,5 @@
+// Je n'ai finalement pas choisi d'utilisé les liste chainée dans ma version final car moins performante celon les test, cependant le code le permet !
+
 #ifndef LIST_H
 #define LIST_H
 #include <stdio.h>

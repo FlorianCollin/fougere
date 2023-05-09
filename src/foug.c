@@ -43,15 +43,11 @@ P_D init_point(double longueur, double angle, P_D O) {
 
 
 int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
-    Vect * current = *head;
-    
-    // const COLOR red = {255, 0, 0};
-    // const COLOR blue = {0, 255, 0};
-    // const COLOR green = {0, 0, 255};
-
+    Vect * current;
+    if (NULL != head){
+        current = *head;
+    }
     const COLOR black = {0, 0, 0};
-    
-
     //printf("\n\nO : ");
     //affiche_point_d(tab[0]);
     //printf("H : ");
@@ -60,20 +56,16 @@ int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
     // calcul des valeurs necessaires pour la suite :
     P_D OH_vector = calcul_vector(tab[0], tab[1]);
     double norme_OH = calcul_norme(OH_vector);
-
     //printf("norme OH : %f\n", norme_OH);
-
     double angle = 0;
     //printf("OH :  ");
     //affiche_point_d(OH_vector);
     angle = atan2(OH_vector.y, OH_vector.x);
-
     //printf("angle : %f rad / %f deg\n", angle, angle*180.0/3.141592);
 
     // FIGURE VERTE :
 
     P_D Og, Hg;
-
     Og.x = tab[0].x + OOg * OH_vector.x;
     Og.y = tab[0].y + OOg * OH_vector.y;
     //printf("Og : ");
@@ -81,10 +73,6 @@ int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
     Hg = init_point(OgHg*norme_OH, opt1*HOgHg -angle, Og);
     //printf("Hg : ");
     //affiche_point_d(Hg);
-
-
-    // ON DESINE SUR LE PIC ICI 
-
     if (draw_line(pic, black,  tab[0], Og)) {
         return -2;
     }
@@ -101,16 +89,11 @@ int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
     //printf("Hr : ");
     //affiche_point_d(Hr);
     
-
-
     // FIGURE BLEU
-
-    // IL ME RESTE À INVERSER LA BLEU !!!
 
     P_D Ob, Hb;
     Ob.x = (tab[0].x + OOb * OH_vector.x);
     Ob.y = (tab[0].y + OOb * OH_vector.y);
-
     //printf("norme OOb : %f\n", calcul_norme(calcul_vector(tab[0], Ob)));
     //printf("Ob : ");
     //affiche_point_d(Ob);
@@ -122,17 +105,16 @@ int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
     int norme_min = 1;
 
 
-
-    
     tab[0] = Ob; tab[1] = Hb;
-    //add_vect(head, tab[0].x, tab[0].y, tab[1].x, tab[1].y);
     if (norme_OH < norme_min){
         return 0;
 
     }
     else {
-        // add_vect(&current, Og.x, Og.y, tab[0].x, tab[0].y);
-        // current = current->next;
+        if (NULL != head){
+            add_vect(&current, Og.x, Og.y, tab[0].x, tab[0].y);
+            current = current->next;
+        } // sinon alors c'est que j'ai chois de ne pas utilisé les listes chainées
         
         tab[0] = Ob; tab[1] = Hb;
         algo_final(pic, tab, -opt1, &current);
@@ -141,6 +123,7 @@ int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
         tab[0] = Or; tab[1] = Hr;
         algo_final(pic, tab, opt1, &current);
 
-
     }
+    return 0;
+
 }

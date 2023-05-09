@@ -7,17 +7,26 @@ Ce programme ce trouve dans le cadre d'un projet scolaire en 1er année d'Élect
 L'objectif finale de ce projet et de réaliser une fractale / image de fougère au format .bmp
 
 
+ATTENTION               README !!
+
+Si vous voulez visualiser la fractale en rosase avec les différentes options alors il faut avoir installer SDL2 et SDL_image sur votre machine.
+Voir le Makefile !!
+
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
-#define SDL_VISU //option pour avoir une visualisation graphique et intéractive de la fractale
+//#define SDL_VISU //option pour avoir une visualisation graphique et intéractive de la fractale
+#define ROTATE // option pour afficher la rotation de la rosase
+// #define MOVE // option pour ajouter le mouvement de la rosase
+// #define GAME // active certain paramètre qui permete de faire un futur jeu ou il faut eviter la rosase
+
 
 
 #ifdef SDL_VISU
-#include <SDL2/SDL.h>
+#include <SDL2/SDL.h>s
 #include <SDL2/SDL_image.h>
 #include "SDL_Tools.h"
 // faire les definitions des variables ici
@@ -54,10 +63,7 @@ int main() {
     #endif
 
     // COLOR 
-    const COLOR black = {0, 0, 0};
-    const COLOR gris = {255,200, 200};
-    const COLOR marque = {255, 0, 255};
-    const COLOR cyan = {0,255,255};
+    //const COLOR black = {0, 0, 0};
     const COLOR white = {255,255,255};
 
     P_D O;
@@ -93,17 +99,15 @@ int main() {
     PIC pic  = new_pic(WIDTH, HEIGHT);
     set_all_pix(pic, white);
 
-    // test de draw_line
+ 
+    ////////////  ETAPE 1 : TEST  ////////////
+    // premier test de draw_line
     // P_D P1 = {0,0};
     // P_D P2 = {50,20};
     // draw_line(pic, black, A, B);
-
-    ////////////  ETAPE 1 : TEST  ////////////
-    
     // // manipulation du pic
     // draw_line(pic, gris, O, H);
     // trace_figure_initial(pic, gris, O, A, B, C, D, E); // on trace la première figure
-
     // set_pixV2(pic, red, O);
     // set_pixV2(pic, red, H);
     // set_pixV2(pic, red, A);
@@ -111,54 +115,43 @@ int main() {
     // set_pixV2(pic, red, C);
     // set_pixV2(pic, red, D);
     // set_pixV2(pic, red, E);
-
     // Premier test de création des 3 sous figure à la main
     // Par la suite on passera bien sur par une fonction recurssive
-
     // P_D Og = init_point(OOg*OH, 0, O);  //<-- ici c simple car l'angle vaut 0,
     // // mais au bout de plusieur ittération plus dutou haha ;)
     // P_D Hg = init_point(OgHg*OH, HOgHg, Og);
-
-
     // P_D Or = init_point(OOr*OH, 0, O);
     // P_D Hr = init_point(OrHr*OH, HOrHr, Or);
-
     // P_D Ob = init_point(OOb*OH, 0, O);
     // P_D Hb = init_point(ObHb*OH, HObHb, Ob);
-
-
-
     // // printf("Or : \n");
     // // affiche_point_d(Or);
     // // printf("Og  : \n");
     // // affiche_point_d(Hr);
-
     // draw_line(pic, green, Og, Hg);
     // draw_line(pic, red, Or, Hr);
     // draw_line(pic, blue, Ob, Hb);
-
     // draw_line(pic, black, O, Og);
-
     // J'arrive bien à dessiner la figure et les sous figures ainsi je peux rentrer dans le vif du sujet
 
     ////////////  ETAPE 2 : GENERATION DE L'IMAGE DE LA FOUGÈRE ///////////////
+    // Je n'ai finalement pas choisi d'utilisé les liste chainée dans ma version final car moins performante celon les test.
+    // Cependant le code le permet en enlevant quelque comentaire "//" !
 
-    Vect* head = create_vect(O.x, O.y, H.x, H.y);
+    //Vect* head = create_vect(O.x, O.y, H.x, H.y);
 
     P_D *tab;
     tab = malloc(2*sizeof(P_D));
     tab[0] = O;
     tab[1] = H;
  
-    algo_final(pic, tab, 1, &head);
-    //sauvegarde du pic
-   
-    
+    algo_final(pic, tab, 1, NULL);
+
     //draw_vector(head, pic, black);
 
     save_pic(pic, "pic.bmp");
     free(tab);
-    delete_list(&head);
+    //delete_list(&head);
 
     //Le(s) image(s) ont été créer !!
 
@@ -169,6 +162,8 @@ int main() {
     float angle = 0;
     int speed = 10;
     SDL_Rect rect = {WIDTH/2, HEIGHT/2, WIDTH/factor, HEIGHT/factor};
+    SDL_Rect collision_box = {rect.x - 180, rect.y-180, 180*2,180*2};
+
     SDL_Point origine_rotation = {0.0};
     // chargement de(s) image(s) :
 
@@ -198,14 +193,17 @@ int main() {
             else if (event.type == SDL_KEYDOWN) {
                 switch (event.key.keysym.sym) {
                     case SDLK_s:
-                        speed +=5;
+                        speed ++;
                         break;
                     case SDLK_d:
-                        speed -=5;
+                        speed --;
                         break;
                 }
             }
 
+        }
+        if (deltaTime < 100){ // 100ms entre chaque frame
+            SDL_Delay(100-deltaTime);
         }
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -214,14 +212,23 @@ int main() {
         SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle+180, &origine_rotation, SDL_FLIP_NONE);
         SDL_RenderCopyEx(renderer, texture, NULL, &rect, angle+270, &origine_rotation, SDL_FLIP_NONE);
 
+        #ifdef GAME
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_RenderDrawRect(renderer, &collision_box);
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        #endif
         SDL_RenderPresent(renderer);
-        if (deltaTime < 50){ // 50ms entre chaque frame
-            SDL_Delay(50-deltaTime);
-            angle += speed;
-            // rect.x += 100;
-            // if (rect.x > WIDTH -100) rect.x = 100;
-        }
-
+        #ifdef ROTATE
+        angle += speed;
+        #endif
+        #ifdef MOVE
+        rect.x += 10;
+        if (rect.x > WIDTH -10) rect.x = 100;
+        #endif
+        #ifdef GAME
+        collision_box.x = rect.x - 180;
+        collision_box.y = rect.y - 180;
+        #endif
     }
 
 

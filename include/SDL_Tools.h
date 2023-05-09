@@ -1,7 +1,7 @@
 #ifndef SDLTOOLS_H
 #define SDLTOOLS_H
  
-//SDL lib
+//SDL lib perso
 
 #include<SDL2/SDL.h>
 #include <SDL2/SDL_image.h>

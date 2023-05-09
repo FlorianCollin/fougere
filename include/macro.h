@@ -1,8 +1,14 @@
 #ifndef MACRO_H
 #define MACRO_H
+
+//On retrouve ici toute les macros comme le nom l'indique
+
 // define : 
 
 // Longueurs :
+
+// ATTENTION avec le UP_SCALE_FACTOR, il multiplie la taille de l'image et donc les detailles, je me suis ammuser à le mettre à 30 ces très fun.
+// Mais cela peut faire EXPLOSER votre pc ;)
 
 #define UP_SCALE_FACTOR 1
 #define PI 3.141592
