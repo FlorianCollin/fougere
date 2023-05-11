@@ -127,3 +127,68 @@ int algo_final(PIC pic, P_D *tab, int opt1, Vect **head) {
     return 0;
 
 }
+
+int algo_final2(PIC pic, P_D *tab, int opt1){
+
+    const COLOR black = {0, 0, 0};
+
+
+    // calcul des valeurs necessaires pour la suite :
+    P_D OH_vector = calcul_vector(tab[0], tab[1]);
+    double norme_OH = calcul_norme(OH_vector);
+
+    double angle = 0;
+
+    angle = atan2(OH_vector.y, OH_vector.x);
+
+    // FIGURE VERTE :
+
+    P_D Og, Hg;
+    Og.x = tab[0].x + OOg * OH_vector.x;
+    Og.y = tab[0].y + OOg * OH_vector.y;
+
+    Hg = init_point(OgHg*norme_OH, opt1*HOgHg -angle, Og);
+
+    if (draw_line(pic, black,  tab[0], Og)) {
+        return -2;
+    }
+
+    // FIGURE ROUGE
+
+    P_D Or, Hr;
+
+    Or.x = tab[0].x + OOr * OH_vector.x;
+    Or.y = tab[0].y + OOr * OH_vector.y;
+
+    Hr = init_point(OrHr*norme_OH, opt1*HOrHr -angle, Or);
+
+    
+    // FIGURE BLEU
+
+    P_D Ob, Hb;
+    Ob.x = (tab[0].x + OOb * OH_vector.x);
+    Ob.y = (tab[0].y + OOb * OH_vector.y);
+
+    Hb = init_point(ObHb*norme_OH, opt1*HObHb -angle, Ob);
+
+
+    // RECURSIVITÉ (le critère de sortie et la norme de OH)
+    int norme_min = 1;
+
+
+    tab[0] = Ob; tab[1] = Hb;
+    if (norme_OH < norme_min){
+        return 0;
+
+    }
+    else {
+        tab[0] = Ob; tab[1] = Hb;
+        algo_final2(pic, tab, -opt1);
+        tab[0] = Og; tab[1] = Hg;
+        algo_final2(pic, tab, opt1);
+        tab[0] = Or; tab[1] = Hr;
+        algo_final2(pic, tab, opt1);
+
+    }
+    return 0;
+}

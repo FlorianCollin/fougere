@@ -44,5 +44,6 @@ algo_final :
 Algorithme recursif pour créer la fougère
 */
 int algo_final(PIC pic, P_D *tab, int opt1, Vect** head);
+int algo_final2(PIC pic, P_D *tab, int opt1);
 
 #endif

@@ -18,15 +18,15 @@ Voir le Makefile !!
 #include <stdlib.h>
 #include <math.h>
 
-//#define SDL_VISU //option pour avoir une visualisation graphique et intéractive de la fractale
+#define SDL_VISU //option pour avoir une visualisation graphique et intéractive de la fractale
 #define ROTATE // option pour afficher la rotation de la rosase
-// #define MOVE // option pour ajouter le mouvement de la rosase
-// #define GAME // active certain paramètre qui permete de faire un futur jeu ou il faut eviter la rosase
+#define MOVE // option pour ajouter le mouvement de la rosase
+#define GAME // active certain paramètre qui permete de faire un futur jeu ou il faut eviter la rosase
 
 
 
 #ifdef SDL_VISU
-#include <SDL2/SDL.h>s
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "SDL_Tools.h"
 // faire les definitions des variables ici
@@ -60,10 +60,10 @@ int main() {
         return 1;
     }
     
-    #endif
+    #endif SDL_VISU
 
     // COLOR 
-    //const COLOR black = {0, 0, 0};
+    const COLOR black = {0, 0, 0};
     const COLOR white = {255,255,255};
 
     P_D O;
@@ -97,6 +97,7 @@ int main() {
     printf("init finish\n");
 
     PIC pic  = new_pic(WIDTH, HEIGHT);
+    printf("new_pic");
     set_all_pix(pic, white);
 
  
@@ -139,13 +140,12 @@ int main() {
     // Cependant le code le permet en enlevant quelque comentaire "//" !
 
     //Vect* head = create_vect(O.x, O.y, H.x, H.y);
-
     P_D *tab;
     tab = malloc(2*sizeof(P_D));
     tab[0] = O;
     tab[1] = H;
  
-    algo_final(pic, tab, 1, NULL);
+    algo_final2(pic, tab, 1);
 
     //draw_vector(head, pic, black);
 
@@ -238,7 +238,7 @@ int main() {
     SDL_DestroyWindow(window);
     SDL_Quit();
 
-    #endif
+    #endif 
 
     return 0;
 }
